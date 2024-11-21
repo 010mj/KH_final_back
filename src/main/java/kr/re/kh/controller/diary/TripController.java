@@ -6,11 +6,13 @@ import kr.re.kh.service.TripService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @RestController
 @RequestMapping ("/api/trips")
+@Slf4j
 public class TripController {
 
     private final TripService tripService;

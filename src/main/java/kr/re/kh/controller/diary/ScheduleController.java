@@ -2,6 +2,7 @@ package kr.re.kh.controller.diary;
 
 import kr.re.kh.entity.Schedule;
 import kr.re.kh.service.ScheduleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedules")
+@Slf4j
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -17,6 +19,7 @@ public class ScheduleController {
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
+
 
     // 1. 새로운 스케줄 추가
     @PostMapping
