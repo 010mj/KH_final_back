@@ -12,15 +12,16 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @AllArgsConstructor
+@Table(name = "PLACE")
 public class PlaceVO {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Column(name = "trip_id", nullable = false)
     private Long tripId;
 
-
+    @Column(name = "name", nullable = false)
     private String name;
 
 
@@ -32,6 +33,6 @@ public class PlaceVO {
 
     private Double longitude;
 
-
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }
