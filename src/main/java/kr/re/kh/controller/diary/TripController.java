@@ -1,17 +1,20 @@
 package kr.re.kh.controller.diary;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.entity.Trip;
+import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.service.TripService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @RestController
-@RequestMapping ("/api/trips")
+@RequestMapping("/api/trips")
 @Slf4j
 public class TripController {
 
@@ -23,7 +26,14 @@ public class TripController {
 
     // 1. 여행 일정 생성
     @PostMapping
-    public ResponseEntity<Trip> createTrip(@RequestBody Trip trip) {
+    public ResponseEntity<Trip> createTrip(
+            @RequestBody Trip trip,
+            @CurrentUser CustomUserDetails userDetails // 로그인한 사용자 정보
+    ) {
+        log.info(userDetails.toString());
+        Long userId = userDetails.getId(); // 사용자 ID 가져오기
+        trip.setUserId(userId); // Trip 객체에 userId 설정
+
         Trip createdTrip = tripService.createTrip(trip);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTrip);
     }
@@ -44,7 +54,14 @@ public class TripController {
 
     // 4. 여행 일정 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Trip> updateTrip(@PathVariable Long id, @RequestBody Trip trip) {
+    public ResponseEntity<Trip> updateTrip(
+            @PathVariable Long id,
+            @RequestBody Trip trip,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getId(); // 현재 로그인한 사용자 ID
+        trip.setUserId(userId); // 수정 시에도 userId를 유지
+
         Trip updatedTrip = tripService.updateTrip(id, trip);
         return ResponseEntity.ok(updatedTrip);
     }
@@ -56,4 +73,3 @@ public class TripController {
         return ResponseEntity.noContent().build();
     }
 }
-
