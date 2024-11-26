@@ -1,18 +1,18 @@
 package kr.re.kh.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
 @Setter
-@Entity
+@Entity(name = "TRIP")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,10 @@ public class Trip {
     private String description;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private Date endDate;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

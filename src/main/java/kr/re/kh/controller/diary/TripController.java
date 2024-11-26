@@ -1,6 +1,5 @@
 package kr.re.kh.controller.diary;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.entity.Trip;
 import kr.re.kh.model.CustomUserDetails;
@@ -11,6 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -27,14 +31,35 @@ public class TripController {
     // 1. 여행 일정 생성
     @PostMapping
     public ResponseEntity<Trip> createTrip(
-            @RequestBody Trip trip,
+            @RequestBody HashMap<String, Object> trip,
             @CurrentUser CustomUserDetails userDetails // 로그인한 사용자 정보
     ) {
         log.info(userDetails.toString());
         Long userId = userDetails.getId(); // 사용자 ID 가져오기
-        trip.setUserId(userId); // Trip 객체에 userId 설정
 
-        Trip createdTrip = tripService.createTrip(trip);
+        log.info(trip.toString());
+
+        Trip request = new Trip();
+        request.setTitle((String) trip.get("title"));
+        request.setDescription((String) trip.get("description"));
+
+        String startDateStr = (String) trip.get("startDate");
+        String endDateStr = (String) trip.get("endDate");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date startDateFormat = sdf.parse(startDateStr);
+            Date endDateFormat = sdf.parse(endDateStr);
+            request.setStartDate(startDateFormat);
+            request.setEndDate(endDateFormat);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        request.setUserId(userId);
+        log.info(request.toString());
+        Trip createdTrip = tripService.createTrip(request);
+        // Trip createdTrip = new Trip();
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTrip);
     }
 
