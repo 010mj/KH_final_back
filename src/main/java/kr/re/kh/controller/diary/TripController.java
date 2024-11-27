@@ -25,6 +25,7 @@ public class TripController {
     private final TripService tripService;
 
     public TripController(TripService tripService) {
+
         this.tripService = tripService;
     }
 

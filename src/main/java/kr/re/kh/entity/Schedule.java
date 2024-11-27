@@ -16,7 +16,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long tripId;  // 연결된 Trip의 ID
+    private String tripId;  // 연결된 Trip의 ID
 
     private String placeName;
 

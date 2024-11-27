@@ -10,6 +10,6 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     // 특정 Trip의 스케줄 목록 조회
-    List<Schedule> findByTripId(Long tripId);
+    List<Schedule> findByTripId(String tripId);
 }
 

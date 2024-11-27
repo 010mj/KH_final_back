@@ -22,7 +22,7 @@ public class ScheduleService {
     // 새로운 스케줄 추가
     public Schedule createSchedule(Schedule schedule) {
         // 관련 Trip ID 유효성 검사
-        if (!tripRepository.existsById(schedule.getTripId())) {
+        if (!tripRepository.existsByTitle(schedule.getTripId())) {
             throw new IllegalArgumentException("Invalid trip ID: " + schedule.getTripId());
         }
         return scheduleRepository.save(schedule);
@@ -30,7 +30,7 @@ public class ScheduleService {
 
     // 특정 일정의 모든 스케줄 조회
     public List<Schedule> getSchedulesByTripId(Long tripId) {
-        return scheduleRepository.findByTripId(tripId);
+        return scheduleRepository.findByTripId(String.valueOf(tripId));
     }
 
     // 특정 스케줄 수정
