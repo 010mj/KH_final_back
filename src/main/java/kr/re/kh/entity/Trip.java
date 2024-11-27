@@ -19,7 +19,7 @@ public class Trip {
 
     private Long id;
 
-    private Long userId;
+    private String userId;
     private String title;
     private String description;
 

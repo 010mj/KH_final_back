@@ -36,7 +36,7 @@ public class TripController {
             @CurrentUser CustomUserDetails userDetails // 로그인한 사용자 정보
     ) {
         log.info(userDetails.toString());
-        Long userId = userDetails.getId(); // 사용자 ID 가져오기
+        String userId = String.valueOf(userDetails.getId()); // 사용자 ID 가져오기
 
         log.info(trip.toString());
 
@@ -86,7 +86,7 @@ public class TripController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getId(); // 현재 로그인한 사용자 ID
-        trip.setUserId(userId); // 수정 시에도 userId를 유지
+        trip.setUserId(String.valueOf(userId)); // 수정 시에도 userId를 유지
 
         Trip updatedTrip = tripService.updateTrip(id, trip);
         return ResponseEntity.ok(updatedTrip);
