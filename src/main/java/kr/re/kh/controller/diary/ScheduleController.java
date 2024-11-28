@@ -53,8 +53,8 @@ public class ScheduleController {
     }
 
     // 2. 특정 일정의 모든 스케줄 조회
-    @GetMapping("/trips/{tripId}")
-    public ResponseEntity<List<Schedule>> getSchedulesByTripId(@PathVariable Long tripId) {
+    @GetMapping("/{tripId}")
+    public ResponseEntity<List<Schedule>> getSchedulesByTripId(@PathVariable String tripId) {
         List<Schedule> schedules = scheduleService.getSchedulesByTripId(tripId);
         return ResponseEntity.ok(schedules);
     }

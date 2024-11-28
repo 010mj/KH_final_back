@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/trips")
 @Slf4j
+@CrossOrigin("http://localhost:3000")
 public class TripController {
 
     private final TripService tripService;
