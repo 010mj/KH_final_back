@@ -35,7 +35,6 @@ public class TripService {
     // 여행 일정 수정
     public Trip updateTrip(Long id, Trip trip) {
         Trip existingTrip = getTripById(id);
-        existingTrip.setTitle(trip.getTitle());
         existingTrip.setDescription(trip.getDescription());
         existingTrip.setStartDate(trip.getStartDate());
         existingTrip.setEndDate(trip.getEndDate());
