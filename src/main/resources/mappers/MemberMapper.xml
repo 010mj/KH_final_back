@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+
+    <select id="selectOne"
+            parameterType="kr.re.kh.vo.MemberVO"
+            resultType="kr.re.kh.vo.MemberVO">
+        SELECT
+        userID
+        , username
+        , requestTime
+        , age
+        , birth
+        , gender
+        , email
+        , joinDate
+        , role
+        FROM USERS
+        WHERE userID = #{userID}
+        AND password = STANDARD_HASH(#{password}, 'SHA256')
+    </select>
+
+    <select id="selectList"
+            parameterType="kr.re.kh.vo.MemberVO"
+            resultType="kr.re.kh.vo.MemberVO">
+        SELECT * FROM USERS ORDER BY userID
+    </select>
+
+    <select id="checkUserID" parameterType="String" resultType="int">
+        SELECT COUNT(*) AS CNT
+        FROM USERS
+        WHERE userID = #{userID}
+    </select>
+
+    <select id="checkEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*) AS CNT
+        FROM USERS
+        WHERE EMAIL = #{email}
+    </select>
+
+    <insert id="insert"
+            parameterType="kr.re.kh.vo.MemberVO">
+        INSERT INTO USERS (
+        userID
+        , password
+        , username
+        , age
+        , birth
+        , gender
+        , email
+        , join_date
+        ) VALUES (
+        #{userID}
+        , STANDARD_HASH(#{password}, 'SHA256')
+        , #{username}
+        , #{age}
+        , #{birth}
+        , #{gender}
+        , #{email}
+        , sysdate
+        )
+    </insert>
+
+    <select id="findID" parameterType="String" resultType="String">
+        SELECT
+        SUBSTR(userID, 1, 2) || LPAD('*', LENGTH(userID) - 2, '*') AS userID
+        FROM USERS
+        WHERE email = #{email}
+    </select>
+
+    <select id="findPW" parameterType="String" resultType="Long">
+        SELECT idx FROM USERS
+        WHERE email = #{email} AND userID = #{userID}
+    </select>
+
+    <update id="updatePW" parameterType="kr.re.kh.vo.MemberVO">
+        UPDATE USERS SET
+        password = STANDARD_HASH(#{password}, 'SHA256')
+        WHERE idx = #{idx}
+    </update>
+</mapper>

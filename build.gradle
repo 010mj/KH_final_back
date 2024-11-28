@@ -66,6 +66,14 @@ dependencies {
 
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
+    // https://mvnrepository.com/artifact/javax.mail/mail
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
+    // https://mvnrepository.com/artifact/org.springframework/spring-context-support
+    implementation group: 'org.springframework', name: 'spring-context-support', version: '5.3.18'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.2.6.RELEASE'
+
+
 
 }
 

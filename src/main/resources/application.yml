@@ -54,6 +54,19 @@ spring:
     time-zone: Asia/Seoul
     date-format: yyyy-MM-dd
     jpa-date-time-format: yyyy-MM-dd HH:mm:ss
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ksbin38@gmail.com
+    password: wcws suav ztde ycqh
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+            required: true
 mybatis:
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: kr.re.kh.model.vo
