@@ -9,6 +9,7 @@ import kr.re.kh.service.FolderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -43,5 +44,14 @@ public class FolderServiceImpl implements FolderService {
             throw  new IllegalStateException("즐겨찾기가 남아있어, 폴더를 삭제할 수 없습니다.");
         }
         folderRepository.deleteById(folderId);
+    }
+
+    @Override
+    @Transactional
+    public void createDefaultFolder(Long userId) {
+        Folder defaultFolder = new Folder();
+        defaultFolder.setUserId(userId);
+        defaultFolder.setFolderName("기본 폴더");
+        folderRepository.save(defaultFolder);
     }
 }

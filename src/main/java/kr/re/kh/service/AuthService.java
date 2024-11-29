@@ -60,8 +60,9 @@ public class AuthService {
         log.info("Trying to register new user [" + newRegistrationRequestEmail + "]");
         log.info(newRegistrationRequest.toString());
         User newUser = userService.createUser(newRegistrationRequest);
-        User registeredNewUser = userService.save(newUser);
-        return Optional.ofNullable(registeredNewUser);
+        User registeredUser = userService.saveAndCreateDefaultFolder(newUser);
+
+        return Optional.ofNullable(registeredUser);
     }
 
     /**

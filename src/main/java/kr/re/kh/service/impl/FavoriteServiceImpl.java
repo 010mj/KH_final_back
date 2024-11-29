@@ -1,6 +1,7 @@
 package kr.re.kh.service.impl;
 
 import kr.re.kh.entity.Favorite;
+import kr.re.kh.entity.FavoriteRequest;
 import kr.re.kh.repository.FavoriteRepository;
 import kr.re.kh.repository.FolderRepository;
 import kr.re.kh.service.FavoriteService;
@@ -21,16 +22,19 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public Favorite createFavorite(Favorite favorite) {
-        if (favorite.getFolderId() == null) {
-            throw new IllegalArgumentException("Folder ID는 null일 수 없습니다.");
-        }
-
-        if (!folderRepository.existsById(favorite.getFolderId())) {
-            throw new IllegalArgumentException("없는 폴더 ID입니다: " + favorite.getFolderId());
-        }
+    public Favorite createFavorite(FavoriteRequest favoriteRequest) {
+        folderRepository.findById(favoriteRequest.getFolderId())
+                .orElseThrow(() -> new IllegalArgumentException("폴더를 찾을 수 없습니다."));
+        Favorite favorite = new Favorite();
+        favorite.setFolderId(favoriteRequest.getFolderId());
+        favorite.setPlaceName(favoriteRequest.getPlaceName());
+        favorite.setAddress(favoriteRequest.getAddress());
+        favorite.setLatitude(favoriteRequest.getLatitude());
+        favorite.setLongitude(favoriteRequest.getLongitude());
+        favorite.setMemo(favoriteRequest.getMemo());
 
         return favoriteRepository.save(favorite);
+
     }
 
     @Override

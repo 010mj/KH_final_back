@@ -1,5 +1,9 @@
 package kr.re.kh.controller.admin;
 
+import kr.re.kh.entity.FavoriteRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+
 import kr.re.kh.entity.Favorite;
 import kr.re.kh.service.FavoriteService;
 import lombok.AllArgsConstructor;
@@ -7,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/favorites")
 @AllArgsConstructor
@@ -20,8 +24,9 @@ public class FavoriteController {
     }
 
     @PostMapping
-    public ResponseEntity<Favorite> createFavorite(@RequestBody Favorite favorite) {
-        Favorite createdFavorite = favoriteService.createFavorite(favorite);
+    public ResponseEntity<Favorite> createFavorite(@RequestBody FavoriteRequest favoriteRequest) {
+      //  System.out.println("Received Request: " + favoriteRequest);
+        Favorite createdFavorite = favoriteService.createFavorite(favoriteRequest);
         return ResponseEntity.ok(createdFavorite);
     }
 
@@ -30,5 +35,6 @@ public class FavoriteController {
         favoriteService.deleteFavorite(id);
         return ResponseEntity.noContent().build();
     }
+
 
 }

@@ -11,4 +11,7 @@ public interface FolderService {
     Folder createFolder(Folder folder);
     Folder getFolderById(Long FolderId);
     void deleteFolder(Long folderId);
+    void createDefaultFolder(Long userId);
+
+
 }
