@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Schedule {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
