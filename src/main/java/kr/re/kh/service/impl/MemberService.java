@@ -135,7 +135,7 @@ public class MemberService implements CrudService<MemberVO> {
         String userID = mapper.findID(email);
 
         map.put("result", userID == null ? false : true);
-        map.put("message", userID == null ? "찾으시는 아이디가 없습니다." : "찾으시는 아이디는 " + userID + "입니다.");
+        map.put("message", userID == null ? "찾으시는 아이디가 없습니다." : "찾으시는 아이디는\n" + userID + "\n입니다.");
         return map;
     }
 

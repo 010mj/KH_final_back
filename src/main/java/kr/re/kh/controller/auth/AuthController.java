@@ -116,7 +116,7 @@ public class AuthController {
             @ApiImplicitParam(name = "email", dataType = "String", required = true),
             @ApiImplicitParam(name = "password", dataType = "String", required = true),
             @ApiImplicitParam(name = "name", dataType = "String", required = true),
-            @ApiImplicitParam(name = "isEmailVerified", dataType = "boolean", required = true)
+            @ApiImplicitParam(name = "is_Email_Verified", dataType = "boolean", required = true)
     })
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest request) {
