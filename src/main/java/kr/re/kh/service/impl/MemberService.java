@@ -134,9 +134,6 @@ public class MemberService implements CrudService<MemberVO> {
                 .email(joinRequest.getEmail())
                 .userID(joinRequest.getUserID())
                 .password(joinRequest.getPassword())
-                .age(age)
-                .birth(birth)
-                .gender(joinRequest.getGender())
                 .username(joinRequest.getUsername())
                 .build();
 
