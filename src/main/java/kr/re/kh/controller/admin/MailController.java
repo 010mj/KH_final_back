@@ -30,6 +30,7 @@ public class MailController {
         try {
             int code = mailService.sendVerificationCode(mailStr);
             verificationCodes.put(mailStr, code);
+            log.info(verificationCodes.toString());
             return ResponseEntity.ok(new ApiResponse(true, String.valueOf(code)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,13 +42,13 @@ public class MailController {
     // 인증번호 검증
     @GetMapping("/verifyCode")
     public ResponseEntity<?> verifyCode(@RequestParam String mail, @RequestParam int code) {
-        Integer storedCode = verificationCodes.get(mail);
+        int storedCode = verificationCodes.get(mail);
 
-        if (storedCode != null && storedCode == code) {
+        if (storedCode == code) {
             verificationCodes.remove(mail);
-            return ResponseEntity.ok("Verification successful");
+            return ResponseEntity.ok(new ApiResponse(true, "인증완료"));
         } else {
-            return ResponseEntity.status(500).body("Invalid verification code");
+            return ResponseEntity.ok(new ApiResponse(false, "인증오류"));
         }
     }
 

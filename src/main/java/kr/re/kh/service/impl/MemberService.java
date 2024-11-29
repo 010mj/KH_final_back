@@ -109,27 +109,6 @@ public class MemberService implements CrudService<MemberVO> {
             return map;
         }
 
-        // 입력받은 생년월일로 만나이 계산하기
-        String birth = joinRequest.getBirth();
-        int year = Integer.parseInt(birth.substring(0, 4));
-        int month = Integer.parseInt(birth.substring(4, 6));
-        int date = Integer.parseInt(birth.substring(6, 8));
-
-        // 현재날짜에서 연 월 일 구분
-        Date present = new Date();
-        DateFormat now = new SimpleDateFormat("yyyyMMdd");
-        String today = now.format(present);
-        int yearNow = Integer.parseInt(today.substring(0, 4));
-        int monthNow = Integer.parseInt(today.substring(4, 6));
-        int dateNow = Integer.parseInt(today.substring(6, 8));
-
-        int age = yearNow - year;
-        if (monthNow <= month) {
-            if (dateNow <= date) {
-                age -= 1;
-            }
-        }
-
         MemberVO memberVO = MemberVO.builder()
                 .email(joinRequest.getEmail())
                 .userID(joinRequest.getUserID())
@@ -141,6 +120,7 @@ public class MemberService implements CrudService<MemberVO> {
 
         map.put("result", true);
         map.put("message", "회원가입 완료");
+        log.info(String.valueOf(map));
 
         return map;
     }
