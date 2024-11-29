@@ -121,8 +121,8 @@ public class UserService {
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setUsername(registerRequest.getUsername());
-        newUser.setActive(false);
-        newUser.setEmailVerified(true);
+        newUser.setActive(registerRequest.isEmailVerified());
+        newUser.setEmailVerified(registerRequest.isEmailVerified());
         newUser.setName(registerRequest.getName());
         newUser.addRoles(getRolesForNewUser(false));
         return newUser;
