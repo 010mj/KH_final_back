@@ -25,7 +25,7 @@ public class FavoriteController {
 
     @PostMapping
     public ResponseEntity<Favorite> createFavorite(@RequestBody FavoriteRequest favoriteRequest) {
-      //  System.out.println("Received Request: " + favoriteRequest);
+       System.out.println("Received Request: " + favoriteRequest);
         Favorite createdFavorite = favoriteService.createFavorite(favoriteRequest);
         return ResponseEntity.ok(createdFavorite);
     }
