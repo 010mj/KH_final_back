@@ -18,9 +18,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@ToString
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationRequest {
@@ -35,4 +35,6 @@ public class RegistrationRequest {
     private String password;
 
     private String name;
+
+    private boolean isEmailVerified;
 }

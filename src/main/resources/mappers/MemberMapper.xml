@@ -32,6 +32,7 @@
         SELECT COUNT(*) AS CNT
         FROM USERS
         WHERE EMAIL = #{email}
+            AND IS_EMAIL_VERIFIED = 1
     </select>
 
     <insert id="insert"
@@ -43,14 +44,17 @@
         , EMAIL
         , CREATED_AT
         , UPDATED_AT
+        , IS_ACTIVE
+        , IS_EMAIL_VERIFIED
         ) VALUES (
         #{userID}
         , STANDARD_HASH(#{password}, 'SHA256')
         , #{username}
-        , #{gender}
         , #{email}
         , sysdate
         , sysdate
+        , 1
+        , 1
         )
     </insert>
 
