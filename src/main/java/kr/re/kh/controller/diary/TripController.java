@@ -67,8 +67,9 @@ public class TripController {
 
     // 2. 전체 여행 일정 조회
     @GetMapping
-    public ResponseEntity<List<Trip>> getAllTrips() {
-        List<Trip> trips = tripService.getAllTrips();
+    public ResponseEntity<List<Trip>> getAllTrips(@CurrentUser CustomUserDetails customUserDetails) {
+        Long userId = customUserDetails.getId();
+        List<Trip> trips = tripService.getAllTrips(userId);
         return ResponseEntity.ok(trips);
     }
 

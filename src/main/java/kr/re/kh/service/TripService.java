@@ -22,8 +22,9 @@ public class TripService {
     }
 
     // 전체 여행 일정 조회
-    public List<Trip> getAllTrips() {
-        return tripRepository.findAll();
+    public List<Trip> getAllTrips(Long userId) {
+
+        return tripRepository.findByUserId(userId.toString());
     }
 
     // 특정 여행 일정 상세 조회
