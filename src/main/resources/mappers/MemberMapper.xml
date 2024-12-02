@@ -72,7 +72,7 @@
 
     <update id="updatePW" parameterType="kr.re.kh.vo.MemberVO">
         UPDATE USERS SET
-        PASSWORD = STANDARD_HASH(#{password}, 'SHA256')
+        PASSWORD = #{password}
         WHERE USER_ID = #{idx}
     </update>
 </mapper>

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.re.kh.mapper.MemberMapper;
@@ -24,6 +25,9 @@ public class MemberService implements CrudService<MemberVO> {
 
     @Autowired
     private MemberMapper mapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<MemberVO> selectList(MemberVO e) {
@@ -162,16 +166,17 @@ public class MemberService implements CrudService<MemberVO> {
 
         // 계정이 있으면 랜덤하게 문자열을 생성해서 idx값에 해당하는 비밀번호 변경
         String randomPw = StringUtil.generateRandomString(6);
+        log.info(randomPw);
 
-        // 기존에 memberShipVO가 있기때문에 별도로 생성 하지 않고 기존 변수명 활용
+        // 기존에 memberVO가 있기때문에 별도로 생성 하지 않고 기존 변수명 활용
         memberVO = MemberVO.builder()
-                .password(randomPw)
+                .password(passwordEncoder.encode(randomPw))
                 .idx(idx).build();
         mapper.updatePW(memberVO);
 
         // 완료 메시지에 비밀번호를 넣어서 리턴
         map.put("result", true);
-        map.put("message", "임시 비밀번호는 " + randomPw + "입니다. 반드시 복사해주세요.");
+        map.put("message", randomPw);
 
         return map;
     }
