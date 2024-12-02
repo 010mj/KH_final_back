@@ -24,9 +24,9 @@ public class Favorite {
 
     @Column(nullable = false)
     private String placeName;
-    private String address;
-    private Double latitude;
-    private Double longitude;
+    //private String address;
+    //private Double latitude;
+    //private Double longitude;
     private String memo;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

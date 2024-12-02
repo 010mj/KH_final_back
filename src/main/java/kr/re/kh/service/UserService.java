@@ -14,6 +14,7 @@
 package kr.re.kh.service;
 
 import kr.re.kh.annotation.CurrentUser;
+import kr.re.kh.entity.Folder;
 import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.exception.UserLogoutException;
 import kr.re.kh.model.CustomUserDetails;
@@ -27,6 +28,7 @@ import kr.re.kh.model.payload.response.PagedResponse;
 import kr.re.kh.model.payload.response.UserListResponse;
 import kr.re.kh.model.payload.response.UserResponse;
 import kr.re.kh.repository.UserRepository;
+import kr.re.kh.service.impl.FolderServiceImpl;
 import kr.re.kh.util.ModelMapper;
 import kr.re.kh.util.ValidatePageNumberAndSize;
 import lombok.AllArgsConstructor;
@@ -51,6 +53,7 @@ public class UserService {
     private final RoleService roleService;
     private final UserDeviceService userDeviceService;
     private final RefreshTokenService refreshTokenService;
+    private final FolderService folderService;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -222,6 +225,13 @@ public class UserService {
         }
     }
 
+    public User saveAndCreateDefaultFolder(User user) {
+        User savedUser = userRepository.save(user);
+
+        folderService.createDefaultFolder(savedUser.getId());
+
+        return savedUser;
+    }
     /**
      * 사용자 권한 조회
      * @param id

@@ -19,7 +19,8 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long folderId;
 
-    private Long userId;
+    @Column(name = "user_id", nullable = false)
+        private Long userId;
 
     @Column(nullable = false)
     private String folderName;
