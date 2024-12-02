@@ -6,30 +6,26 @@
             parameterType="kr.re.kh.vo.MemberVO"
             resultType="kr.re.kh.vo.MemberVO">
         SELECT
-        userID
-        , username
-        , requestTime
-        , age
-        , birth
-        , gender
-        , email
-        , joinDate
-        , role
+        USERNAME
+        , NAME
+        , CREATED_AT
+        , EMAIL
+        , UPDATED_AT
         FROM USERS
-        WHERE userID = #{userID}
-        AND password = STANDARD_HASH(#{password}, 'SHA256')
+        WHERE USERNAME = #{userID}
+        AND PASSWORD = STANDARD_HASH(#{password}, 'SHA256')
     </select>
 
     <select id="selectList"
             parameterType="kr.re.kh.vo.MemberVO"
             resultType="kr.re.kh.vo.MemberVO">
-        SELECT * FROM USERS ORDER BY userID
+        SELECT * FROM USERS ORDER BY USERNAME
     </select>
 
     <select id="checkUserID" parameterType="String" resultType="int">
         SELECT COUNT(*) AS CNT
         FROM USERS
-        WHERE userID = #{userID}
+        WHERE USERNAME = #{userID}
     </select>
 
     <select id="checkEmail" parameterType="String" resultType="int">
@@ -41,41 +37,38 @@
     <insert id="insert"
             parameterType="kr.re.kh.vo.MemberVO">
         INSERT INTO USERS (
-        userID
-        , password
-        , username
-        , age
-        , birth
-        , gender
-        , email
-        , join_date
+        USERNAME
+        , PASSWORD
+        , NAME
+        , EMAIL
+        , CREATED_AT
+        , UPDATED_AT
         ) VALUES (
         #{userID}
         , STANDARD_HASH(#{password}, 'SHA256')
         , #{username}
-        , #{age}
-        , #{birth}
         , #{gender}
         , #{email}
+        , sysdate
         , sysdate
         )
     </insert>
 
     <select id="findID" parameterType="String" resultType="String">
         SELECT
-        SUBSTR(userID, 1, 2) || LPAD('*', LENGTH(userID) - 2, '*') AS userID
+        SUBSTR(USERNAME, 1, 2) || LPAD('*', LENGTH(USERNAME) - 2, '*') AS USERNAME
         FROM USERS
-        WHERE email = #{email}
+        WHERE EMAIL = #{email}
     </select>
 
     <select id="findPW" parameterType="String" resultType="Long">
-        SELECT idx FROM USERS
-        WHERE email = #{email} AND userID = #{userID}
+        SELECT USER_ID FROM USERS
+        WHERE EMAIL = #{email} AND USERNAME = #{userID}
     </select>
 
     <update id="updatePW" parameterType="kr.re.kh.vo.MemberVO">
         UPDATE USERS SET
-        password = STANDARD_HASH(#{password}, 'SHA256')
-        WHERE idx = #{idx}
+        PASSWORD = STANDARD_HASH(#{password}, 'SHA256')
+        WHERE USER_ID = #{idx}
     </update>
 </mapper>
