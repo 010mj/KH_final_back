@@ -73,6 +73,6 @@
     <update id="updatePW" parameterType="kr.re.kh.vo.MemberVO">
         UPDATE USERS SET
         PASSWORD = #{password}
-        WHERE EMAIL = #{email} AND USERNAME = #{userID}
+        WHERE USER_ID = #{idx}
     </update>
 </mapper>
