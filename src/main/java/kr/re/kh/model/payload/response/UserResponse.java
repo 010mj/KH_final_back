@@ -21,11 +21,12 @@ public class UserResponse {
     private boolean active;
     private String name;
 
-    public UserResponse(String username, String email, Set<Role> roles, Long id) {
+    public UserResponse(String username, String email, Set<Role> roles, Long id, String name) {
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.id = id;
+        this.name = name;
     }
 
     public UserResponse(String username, String email, Set<Role> roles, Long id, boolean active, String name) {
