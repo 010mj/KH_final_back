@@ -3,16 +3,14 @@ package kr.re.kh.entity;
 import lombok.*;
 
 
-@Data
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@ToString
 public class FavoriteRequest {
     private Long folderId;
     private String placeName;
    // private String address;
     //private Double latitude;
    // private Double longitude;
-    private String description;
+    private String memo;
 }
