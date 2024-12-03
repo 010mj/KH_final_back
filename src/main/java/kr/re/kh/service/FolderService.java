@@ -1,6 +1,7 @@
 package kr.re.kh.service;
 
 import kr.re.kh.entity.Folder;
+import kr.re.kh.model.vo.FolderVO;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface FolderService {
     Folder getFolderById(Long FolderId);
     void deleteFolder(Long folderId);
     void createDefaultFolder(Long userId);
-
+    List<FolderVO> selectFolderByUserId(Long userId);
 
 }

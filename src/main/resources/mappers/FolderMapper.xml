@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.FolderMapper">
+
+    <select id="selectFolderByUserId" parameterType="Long" resultType="FolderVO">
+        SELECT
+            A.FOLDER_ID
+            , A.FOLDER_NAME
+        , A.CREATED_AT
+        FROM FOLDERS A
+            LEFT OUTER JOIN FAVORITES B ON A.FOLDER_ID = B.FOLDER_ID
+        WHERE A.USER_ID = #{userId}
+            ORDER BY A.CREATED_AT
+    </select>
+</mapper>
+
+
+
+
+

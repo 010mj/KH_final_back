@@ -2,6 +2,8 @@ package kr.re.kh.service.impl;
 
 import kr.re.kh.entity.Favorite;
 import kr.re.kh.entity.Folder;
+import kr.re.kh.mapper.FolderMapper;
+import kr.re.kh.model.vo.FolderVO;
 import kr.re.kh.repository.FavoriteRepository;
 import kr.re.kh.repository.FolderRepository;
 
@@ -10,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,6 +21,7 @@ public class FolderServiceImpl implements FolderService {
 
     private final FolderRepository folderRepository;
     private final FavoriteRepository favoriteRepository;
+    private final FolderMapper folderMapper;
 
 
 
@@ -52,6 +56,14 @@ public class FolderServiceImpl implements FolderService {
         Folder defaultFolder = new Folder();
         defaultFolder.setUserId(userId);
         defaultFolder.setFolderName("기본 폴더");
+        defaultFolder.setCreatedAt(LocalDateTime.now());
         folderRepository.save(defaultFolder);
     }
+
+    @Override
+    public List<FolderVO> selectFolderByUserId(Long userId) {
+        return folderMapper.selectFolderByUserId(userId);
+    }
+
+
 }

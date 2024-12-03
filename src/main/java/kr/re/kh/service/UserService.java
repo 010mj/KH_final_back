@@ -41,6 +41,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -228,7 +229,11 @@ public class UserService {
     public User saveAndCreateDefaultFolder(User user) {
         User savedUser = userRepository.save(user);
 
-        folderService.createDefaultFolder(savedUser.getId());
+        Folder defaultFolder = new Folder();
+        defaultFolder.setUserId(savedUser.getId());
+        defaultFolder.setFolderName("기본 폴더");
+        defaultFolder.setCreatedAt(LocalDateTime.now());
+        folderService.createFolder(defaultFolder);
 
         return savedUser;
     }

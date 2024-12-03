@@ -31,7 +31,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         //favorite.setAddress(favoriteRequest.getAddress());
        //favorite.setLatitude(favoriteRequest.getLatitude());
         //favorite.setLongitude(favoriteRequest.getLongitude());
-        favorite.setMemo(favoriteRequest.getDescription());
+        favorite.setMemo(favoriteRequest.getMemo());
 
         return favoriteRepository.save(favorite);
 

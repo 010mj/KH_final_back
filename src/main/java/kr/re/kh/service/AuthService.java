@@ -44,6 +44,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserDeviceService userDeviceService;
+    private final FolderService folderService;
+
 
     /**
      * 사용자 등록
@@ -60,7 +62,9 @@ public class AuthService {
         log.info("Trying to register new user [" + newRegistrationRequestEmail + "]");
         log.info(newRegistrationRequest.toString());
         User newUser = userService.createUser(newRegistrationRequest);
-        User registeredUser = userService.saveAndCreateDefaultFolder(newUser);
+        //User registeredUser = userService.saveAndCreateDefaultFolder(newUser);
+        User registeredUser = userService.save(newUser);
+        folderService.createDefaultFolder(registeredUser.getId());
 
         return Optional.ofNullable(registeredUser);
     }
