@@ -99,8 +99,6 @@ public class AuthService {
                 loginRequest.getPassword())));
     }
 
-
-
     /**
      * 비번 변경시 현재 입력한 비밀번호가 맞는지 확인한다
      * @param currentUser
@@ -173,6 +171,23 @@ public class AuthService {
                 .map(UserDevice::getUser)
                 .map(User::getId).map(this::generateTokenFromUserId))
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "갱신 토큰이 데이터베이스에 없습니다. 다시 로그인 해 주세요."));
+    }
+
+    // 미완성 단계(회원정보 수정)
+    public Optional<User> update(RegistrationRequest newRegistrationRequest) {
+        String newRegistrationRequestEmail = newRegistrationRequest.getEmail();
+        if (emailAlreadyExists(newRegistrationRequestEmail)) {
+            log.error("Email already exists: " + newRegistrationRequestEmail);
+            throw new ResourceAlreadyInUseException("Email", "이메일 주소", newRegistrationRequestEmail);
+        }
+        log.info("Trying to register new user [" + newRegistrationRequestEmail + "]");
+        log.info(newRegistrationRequest.toString());
+        User newUser = userService.createUser(newRegistrationRequest);
+        //User registeredUser = userService.saveAndCreateDefaultFolder(newUser);
+        User registeredUser = userService.save(newUser);
+        folderService.createDefaultFolder(registeredUser.getId());
+
+        return Optional.ofNullable(registeredUser);
     }
 
 }

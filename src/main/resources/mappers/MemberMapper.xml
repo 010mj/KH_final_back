@@ -75,4 +75,20 @@
         PASSWORD = #{password}
         WHERE USER_ID = #{idx}
     </update>
+
+    <select id="selectUser"
+            parameterType="String"
+            resultType="Long">
+        SELECT
+        USER_ID
+        FROM USERS
+        WHERE USERNAME = #{userID}
+    </select>
+
+    <select id="updateEmailCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) AS CNT
+        FROM USERS
+        WHERE EMAIL = #{email} AND IS_EMAIL_VERIFIED = 1
+        EXCEPT USERNAME = #{userID}
+    </select>
 </mapper>

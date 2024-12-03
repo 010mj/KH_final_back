@@ -30,89 +30,89 @@ public class CommonController {
     @Autowired
     private MemberService memberService;
 
-    // 로그인 페이지
-    @RequestMapping("/login")
-    public ModelAndView login(
-            @RequestParam(value = "userID", required = false, defaultValue = "") String userID,
-            @RequestParam(value = "password", required = false, defaultValue = "") String password) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("login");
-        mav.addObject("userID", userID);
-        mav.addObject("password", password);
-        return mav;
-    }
-
-    @PostMapping("/loginProc")
-    public ModelAndView loginProc(
-            @ModelAttribute MemberVO memberVO, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-        MemberVO result = memberService.selectOne(memberVO);
-        if (result != null) {
-            log.info("로그인 성공");
-            HttpSession session = request.getSession();
-            session.setAttribute("userInfo", result);
-
-            String redirectUrl = (String) session.getAttribute("redirectUrl");
-            if (redirectUrl != null) {
-                mav.setViewName("redirect:" + redirectUrl);  // 세션에 저장된 URL로 리다이렉트
-                session.removeAttribute("redirectUrl");  // 리다이렉트 후 세션에서 URL 삭제
-            } else {
-                mav.setViewName("redirect:/");  // 기본 페이지로 리다이렉트
-            }
-
-        } else {
-            log.info("로그인 실패");
-            mav.setViewName("forward:/login");
-        }
-        return mav;
-    }
-
-    /**
-     * 로그아웃
-     * @param request
-     * @return
-     */
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        // 세션 삭제
-        session.invalidate();
-        return "redirect:/";
-    }
-
-    /**
-     * 회원가입 양식
-     * @return
-     */
-    @GetMapping("/join")
-    public ModelAndView join() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("join");
-        return mav;
-    }
-
-    /**
-     * 회원가입 처리
-     * @param memberVO
-     */
-    @PostMapping("/joinProc")
-    public String joinProc(@ModelAttribute MemberVO memberVO) {
-        memberService.insert(memberVO);
-        return "redirect:/login";
-    }
-
-    /**
-     * 회원가입 비동기 처리
-     * @param joinRequest
-     * @RequestBody 어노테이션이 있어야 post형식의 데이터를 받을 수 있다
-     * @return
-     */
-    @PostMapping("/joinProc2")
-    @ResponseBody
-    public ResponseEntity<?> joinProc2(@RequestBody JoinRequest joinRequest) {
-        log.info(joinRequest.toString());
-        return ResponseEntity.ok(memberService.memberJoin(joinRequest));
-    }
+//    // 로그인 페이지
+//    @RequestMapping("/login")
+//    public ModelAndView login(
+//            @RequestParam(value = "userID", required = false, defaultValue = "") String userID,
+//            @RequestParam(value = "password", required = false, defaultValue = "") String password) {
+//        ModelAndView mav = new ModelAndView();
+//        mav.setViewName("login");
+//        mav.addObject("userID", userID);
+//        mav.addObject("password", password);
+//        return mav;
+//    }
+//
+//    @PostMapping("/loginProc")
+//    public ModelAndView loginProc(
+//            @ModelAttribute MemberVO memberVO, HttpServletRequest request) {
+//        ModelAndView mav = new ModelAndView();
+//        MemberVO result = memberService.selectOne(memberVO);
+//        if (result != null) {
+//            log.info("로그인 성공");
+//            HttpSession session = request.getSession();
+//            session.setAttribute("userInfo", result);
+//
+//            String redirectUrl = (String) session.getAttribute("redirectUrl");
+//            if (redirectUrl != null) {
+//                mav.setViewName("redirect:" + redirectUrl);  // 세션에 저장된 URL로 리다이렉트
+//                session.removeAttribute("redirectUrl");  // 리다이렉트 후 세션에서 URL 삭제
+//            } else {
+//                mav.setViewName("redirect:/");  // 기본 페이지로 리다이렉트
+//            }
+//
+//        } else {
+//            log.info("로그인 실패");
+//            mav.setViewName("forward:/login");
+//        }
+//        return mav;
+//    }
+//
+//    /**
+//     * 로그아웃
+//     * @param request
+//     * @return
+//     */
+//    @GetMapping("/logout")
+//    public String logout(HttpServletRequest request) {
+//        HttpSession session = request.getSession();
+//        // 세션 삭제
+//        session.invalidate();
+//        return "redirect:/";
+//    }
+//
+//    /**
+//     * 회원가입 양식
+//     * @return
+//     */
+//    @GetMapping("/join")
+//    public ModelAndView join() {
+//        ModelAndView mav = new ModelAndView();
+//        mav.setViewName("join");
+//        return mav;
+//    }
+//
+//    /**
+//     * 회원가입 처리
+//     * @param memberVO
+//     */
+//    @PostMapping("/joinProc")
+//    public String joinProc(@ModelAttribute MemberVO memberVO) {
+//        memberService.insert(memberVO);
+//        return "redirect:/login";
+//    }
+//
+//    /**
+//     * 회원가입 비동기 처리
+//     * @param joinRequest
+//     * @RequestBody 어노테이션이 있어야 post형식의 데이터를 받을 수 있다
+//     * @return
+//     */
+//    @PostMapping("/joinProc2")
+//    @ResponseBody
+//    public ResponseEntity<?> joinProc2(@RequestBody JoinRequest joinRequest) {
+//        log.info(joinRequest.toString());
+//        return ResponseEntity.ok(memberService.memberJoin(joinRequest));
+//    }
 
     /**
      * 비동기 통신 아이디 중복 확인
@@ -176,6 +176,20 @@ public class CommonController {
     public ResponseEntity<?> changePW(
             @RequestBody ChangePwRequest changePwRequest) {
         return ResponseEntity.ok(memberService.changePW(changePwRequest));
+    }
+
+    /**
+     * 회원정보 수정 본인 이메일 중복 확인
+     * @param email
+     * @return
+     */
+    @GetMapping("/isEmailAvailable/{email}")
+    @ResponseBody
+    public ResponseEntity<?> isEmailAvailable(
+            @PathVariable(value = "email") String email, HttpServletRequest request
+    ) {
+        HashMap<String, Object> result = memberService.isEmailAvailable(email, request);
+        return ResponseEntity.ok(result);
     }
 
 }

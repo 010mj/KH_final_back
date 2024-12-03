@@ -19,6 +19,9 @@ import kr.re.kh.vo.MemberVO;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Service
 @Slf4j
 public class MemberService implements CrudService<MemberVO> {
@@ -93,41 +96,41 @@ public class MemberService implements CrudService<MemberVO> {
      * @param joinRequest
      * @return
      */
-    public HashMap<String, Object> memberJoin(JoinRequest joinRequest) {
-        HashMap<String, Object> map = new HashMap<>();
-
-        // 아이디 중복 체크
-        HashMap<String, Object> idMap = this.checkUserID(joinRequest.getUserID());
-        boolean idExist = (boolean)idMap.get("isExist");
-
-        if (idExist) {
-            map.put("result", false);
-            return map;
-        }
-        // 이메일 중복 체크
-        HashMap<String, Object> emailMap = this.checkEmail(joinRequest.getEmail());
-        boolean emailExist = (boolean)emailMap.get("isExist");
-
-        if (emailExist) {
-            map.put("result", false);
-            return map;
-        }
-
-        MemberVO memberVO = MemberVO.builder()
-                .email(joinRequest.getEmail())
-                .userID(joinRequest.getUserID())
-                .password(joinRequest.getPassword())
-                .username(joinRequest.getUsername())
-                .build();
-
-        this.insert(memberVO);
-
-        map.put("result", true);
-        map.put("message", "회원가입 완료");
-        log.info(String.valueOf(map));
-
-        return map;
-    }
+//    public HashMap<String, Object> memberJoin(JoinRequest joinRequest) {
+//        HashMap<String, Object> map = new HashMap<>();
+//
+//        // 아이디 중복 체크
+//        HashMap<String, Object> idMap = this.checkUserID(joinRequest.getUserID());
+//        boolean idExist = (boolean)idMap.get("isExist");
+//
+//        if (idExist) {
+//            map.put("result", false);
+//            return map;
+//        }
+//        // 이메일 중복 체크
+//        HashMap<String, Object> emailMap = this.checkEmail(joinRequest.getEmail());
+//        boolean emailExist = (boolean)emailMap.get("isExist");
+//
+//        if (emailExist) {
+//            map.put("result", false);
+//            return map;
+//        }
+//
+//        MemberVO memberVO = MemberVO.builder()
+//                .email(joinRequest.getEmail())
+//                .userID(joinRequest.getUserID())
+//                .password(joinRequest.getPassword())
+//                .username(joinRequest.getUsername())
+//                .build();
+//
+//        this.insert(memberVO);
+//
+//        map.put("result", true);
+//        map.put("message", "회원가입 완료");
+//        log.info(String.valueOf(map));
+//
+//        return map;
+//    }
 
     /**
      * 이메일 입력받아 아이디 찾기
@@ -178,6 +181,32 @@ public class MemberService implements CrudService<MemberVO> {
         map.put("result", true);
         map.put("message", randomPw);
 
+        return map;
+    }
+
+    public HashMap<String, Object> isEmailAvailable(String email, HttpServletRequest request) {
+        int cnt = mapper.checkEmail(email);
+        HttpSession session = request.getSession();
+        MemberVO userInfo = (MemberVO) session.getAttribute("userInfo");
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        MemberVO emailCheck = mapper.updateEmailCheck(userInfo.getUserID());
+        log.info(emailCheck.getEmail());
+        log.info(userInfo.getEmail());
+        log.info(email);
+        if (userInfo.getEmail().equals(email) && userInfo.getEmail().equals(emailCheck.getEmail())) {
+            log.info("aaaaaaaaaaaaaaaaaaaaaa");
+            // 이메일이 같으면 그냥 넘어간다
+            map.put("isExist", false);
+        } else {
+            log.info("12345");
+            int emailCount = mapper.checkEmail(email);
+            log.info(String.valueOf(emailCount));
+            map.put("isExist", emailCount == 0? false: true);
+        }
+
+        log.info(map.toString());
         return map;
     }
 

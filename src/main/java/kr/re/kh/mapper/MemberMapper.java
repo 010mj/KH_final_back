@@ -79,4 +79,17 @@ public class MemberMapper {
         session.update("member.updatePW", memberVO);
     }
 
+    /**
+     * 회원정보 변경시 본인 이메일 중복 제외 체크
+     * @param userID
+     * @return
+     */
+    public MemberVO updateEmailCheck(String userID) {
+        return session.selectOne("member.updateEmailCheck", userID);
+    }
+
+    public Long selectUser(String userID) {
+        return session.selectOne("member.selectUser", userID);
+    }
+
 }
