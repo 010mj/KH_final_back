@@ -131,17 +131,17 @@ public class AuthController {
      * @param request
      * @return
      */
-    @ApiOperation(value = "정보수정")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "email", dataType = "String", required = true),
-            @ApiImplicitParam(name = "password", dataType = "String", required = true),
-    })
-    @PostMapping("/updateInfo")
-    public ResponseEntity<?> update(@Valid @RequestBody RegistrationRequest request) {
-        log.info(request.toString());
-        return authService.registerUser(request).map(user -> {
-            return ResponseEntity.ok(new ApiResponse(true, "등록되었습니다."));
-        }).orElseThrow(() -> new UserRegistrationException(request.getUsername(), "가입오류"));
-    }
+//    @ApiOperation(value = "정보수정")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "email", dataType = "String", required = true),
+//            @ApiImplicitParam(name = "password", dataType = "String", required = true),
+//    })
+//    @PostMapping("/updateInfo")
+//    public ResponseEntity<?> update(@Valid @RequestBody RegistrationRequest request) {
+//        log.info(request.toString());
+//        return authService.updateInfo(request).map(user -> {
+//            return ResponseEntity.ok(new ApiResponse(true, "등록되었습니다."));
+//        }).orElseThrow(() -> new UserRegistrationException(request.getUsername(), "수정오류"));
+//    }
 
 }

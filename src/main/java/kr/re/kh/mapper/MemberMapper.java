@@ -92,4 +92,15 @@ public class MemberMapper {
         return session.selectOne("member.selectUser", userID);
     }
 
+    public Long findUser(MemberVO memberVO) {
+        return session.selectOne("member.findUser", memberVO);
+    }
+
+    public void updateInfo(MemberVO memberVO) {
+        session.update("member.updateInfo", memberVO);
+    }
+
+    public void withdraw(Long idx) {
+        session.update("member.withdraw", idx);
+    }
 }
