@@ -42,11 +42,11 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public void deleteFolder(Long folderId) {
-        List< Favorite> favorites = favoriteRepository.findByFolderId(folderId);
-        if(!favorites.isEmpty()) {
-            throw  new IllegalStateException("즐겨찾기가 남아있어, 폴더를 삭제할 수 없습니다.");
-        }
+    public void deleteFolderAndFavorites(Long folderId) {
+        // 폴더에 포함된 즐겨찾기 데이터 삭제
+        favoriteRepository.deleteByFolderId(folderId);
+
+        // 폴더 삭제
         folderRepository.deleteById(folderId);
     }
 

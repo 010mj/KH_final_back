@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import kr.re.kh.payload.request.UpdateInfoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -184,29 +185,63 @@ public class MemberService implements CrudService<MemberVO> {
         return map;
     }
 
-    public HashMap<String, Object> isEmailAvailable(String email, HttpServletRequest request) {
-        int cnt = mapper.checkEmail(email);
-        HttpSession session = request.getSession();
-        MemberVO userInfo = (MemberVO) session.getAttribute("userInfo");
+    public Object updateInfo(UpdateInfoRequest updateInfoRequest) {
+        MemberVO memberVO = MemberVO.builder()
+                .userID(updateInfoRequest.getUserID())
+                .build();
+        log.info(memberVO.toString());
+        Long idx = mapper.findUser(memberVO);
+
+        log.info(updateInfoRequest.getUsername());
 
         HashMap<String, Object> map = new HashMap<>();
 
-        MemberVO emailCheck = mapper.updateEmailCheck(userInfo.getUserID());
-        log.info(emailCheck.getEmail());
-        log.info(userInfo.getEmail());
-        log.info(email);
-        if (userInfo.getEmail().equals(email) && userInfo.getEmail().equals(emailCheck.getEmail())) {
-            log.info("aaaaaaaaaaaaaaaaaaaaaa");
-            // 이메일이 같으면 그냥 넘어간다
-            map.put("isExist", false);
-        } else {
-            log.info("12345");
-            int emailCount = mapper.checkEmail(email);
-            log.info(String.valueOf(emailCount));
-            map.put("isExist", emailCount == 0? false: true);
+        // row가 없으면 계정 못찾는 메시지 리턴
+        if (idx == null) {
+            map.put("result", false);
+            map.put("message", "계정을 찾을 수 없습니다.");
+            return map;
         }
 
-        log.info(map.toString());
+        // 계정이 있으면 랜덤하게 문자열을 생성해서 idx값에 해당하는 비밀번호 변경
+        String newPW = updateInfoRequest.getPassword();
+        log.info(newPW);
+
+        // 기존에 memberVO가 있기때문에 별도로 생성 하지 않고 기존 변수명 활용
+        memberVO = MemberVO.builder()
+                .password(passwordEncoder.encode(newPW))
+                .email(updateInfoRequest.getEmail())
+                .idx(idx).build();
+        log.info(memberVO.toString());
+        mapper.updateInfo(memberVO);
+
+        // 완료 메시지 리턴
+        map.put("result", true);
+        map.put("message", "회원정보 수정 성공");
+
+        return map;
+    }
+
+    public Object withdraw(UpdateInfoRequest updateInfoRequest) {
+        MemberVO memberVO = MemberVO.builder()
+                .userID(updateInfoRequest.getUserID())
+                .build();
+        Long idx = mapper.findUser(memberVO);
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        // row가 없으면 계정 못찾는 메시지 리턴
+        if (idx == null) {
+            map.put("result", false);
+            map.put("message", "계정을 찾을 수 없습니다.");
+            return map;
+        }
+        mapper.withdraw(idx);
+
+        // 완료 메시지 리턴
+        map.put("result", true);
+        map.put("message", "회원 탈퇴 성공");
+
         return map;
     }
 

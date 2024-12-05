@@ -12,6 +12,10 @@
         WHERE A.USER_ID = #{userId}
             ORDER BY A.CREATED_AT
     </select>
+
+    <delete id="deleteFolder" parameterType="Long">
+        DELETE FROM FOLDERS WHERE FOLDER_ID = #{folderId}
+    </delete>
 </mapper>
 
 

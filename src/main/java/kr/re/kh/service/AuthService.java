@@ -174,20 +174,18 @@ public class AuthService {
     }
 
     // 미완성 단계(회원정보 수정)
-    public Optional<User> update(RegistrationRequest newRegistrationRequest) {
-        String newRegistrationRequestEmail = newRegistrationRequest.getEmail();
-        if (emailAlreadyExists(newRegistrationRequestEmail)) {
-            log.error("Email already exists: " + newRegistrationRequestEmail);
-            throw new ResourceAlreadyInUseException("Email", "이메일 주소", newRegistrationRequestEmail);
-        }
-        log.info("Trying to register new user [" + newRegistrationRequestEmail + "]");
-        log.info(newRegistrationRequest.toString());
-        User newUser = userService.createUser(newRegistrationRequest);
-        //User registeredUser = userService.saveAndCreateDefaultFolder(newUser);
-        User registeredUser = userService.save(newUser);
-        folderService.createDefaultFolder(registeredUser.getId());
-
-        return Optional.ofNullable(registeredUser);
-    }
+//    public Optional<User> updateInfo(RegistrationRequest newRegistrationRequest) {
+//        String newRegistrationRequestEmail = newRegistrationRequest.getEmail();
+//        if (emailAlreadyExists(newRegistrationRequestEmail)) {
+//            log.error("Email already exists: " + newRegistrationRequestEmail);
+//            throw new ResourceAlreadyInUseException("Email", "이메일 주소", newRegistrationRequestEmail);
+//        }
+//        log.info("Trying to register new user [" + newRegistrationRequestEmail + "]");
+//        log.info(newRegistrationRequest.toString());
+//        User newUser = userService.createUser(newRegistrationRequest);
+//        User registeredUser = userService.save(newUser);
+//
+//        return Optional.ofNullable(registeredUser);
+//    }
 
 }

@@ -2,8 +2,12 @@ package kr.re.kh.controller.admin;
 
 import java.util.HashMap;
 
+import kr.re.kh.annotation.CurrentUser;
+import kr.re.kh.model.CustomUserDetails;
+import kr.re.kh.payload.request.UpdateInfoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +25,7 @@ import javax.servlet.http.HttpSession;
 /**
  * test2
  */
-@Controller
+@RestController
 @Slf4j
 @RequestMapping("/api")
 @CrossOrigin("http://localhost:3000")
@@ -178,18 +182,29 @@ public class CommonController {
         return ResponseEntity.ok(memberService.changePW(changePwRequest));
     }
 
+    @GetMapping("/findUser")
+    public String findUser() {
+        return "findUser";
+    }
+
     /**
-     * 회원정보 수정 본인 이메일 중복 확인
-     * @param email
+     * 회원정보 수정
+     * @param updateInfoRequest
      * @return
      */
-    @GetMapping("/isEmailAvailable/{email}")
-    @ResponseBody
-    public ResponseEntity<?> isEmailAvailable(
-            @PathVariable(value = "email") String email, HttpServletRequest request
+    @PostMapping("/updateInfo")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> updateInfo(
+            @RequestBody UpdateInfoRequest updateInfoRequest, @CurrentUser CustomUserDetails currentUser
     ) {
-        HashMap<String, Object> result = memberService.isEmailAvailable(email, request);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(memberService.updateInfo(updateInfoRequest));
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> withdraw(
+            @RequestBody UpdateInfoRequest updateInfoRequest, @CurrentUser CustomUserDetails currentUser
+    ) {
+        return ResponseEntity.ok(memberService.withdraw(updateInfoRequest));
     }
 
 }
