@@ -11,5 +11,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     boolean existsByTitle(String title);
 
     List<Trip> findByUserId(String userId);
+
+    void deleteById(Long id);
 }
 
