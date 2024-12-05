@@ -6,6 +6,7 @@ import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.service.FolderService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/folders")
 @AllArgsConstructor
 public class FolderController {
@@ -39,8 +41,12 @@ public class FolderController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFolder(@PathVariable Long id) {
-        folderService.deleteFolder(id);
-        return ResponseEntity.noContent().build();
+        try {
+            folderService.deleteFolderAndFavorites(id); // 폴더와 관련된 즐겨찾기 삭제
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 
