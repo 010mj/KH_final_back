@@ -96,8 +96,8 @@ public class TripController {
 
     // 5. 여행 일정 삭제
     @DeleteMapping("/deleteTrip")
-    public ResponseEntity<Void> deleteTrip(@RequestParam Long id,@RequestParam String tripId) {
+    public ResponseEntity<?> deleteTrip(@RequestParam Long id,@RequestParam String tripId) {
         tripService.deleteTrip(id,tripId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("ok");
     }
 }
