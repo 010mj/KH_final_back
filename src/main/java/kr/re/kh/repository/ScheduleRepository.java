@@ -13,7 +13,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     // 특정 Trip의 스케줄 목록 조회
     List<Schedule> findByTripId(String tripId);
 
-    @Query(value = "DELETE FROM SCHEDULE WHERE TRIP_ID = :tripId", nativeQuery = true)
-    void deleteByTripId(String tripId);
+    //@Query(value = "DELETE FROM SCHEDULE WHERE TRIP_ID = :tripId", nativeQuery = true)
+    // void deleteByTripId(String tripId);
 }
 

@@ -1,6 +1,7 @@
 package kr.re.kh.service;
 
 import kr.re.kh.entity.Trip;
+import kr.re.kh.mapper.ScheduleMapper;
 import kr.re.kh.repository.ScheduleRepository;
 import kr.re.kh.repository.TripRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,12 @@ public class TripService {
 
     private final TripRepository tripRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleMapper scheduleMapper;
 
-    public TripService(TripRepository tripRepository, ScheduleRepository scheduleRepository) {
+    public TripService(TripRepository tripRepository, ScheduleRepository scheduleRepository, ScheduleMapper scheduleMapper) {
         this.tripRepository = tripRepository;
         this.scheduleRepository = scheduleRepository;
+        this.scheduleMapper = scheduleMapper;
     }
 
     // 여행 일정 생성
@@ -52,7 +55,7 @@ public class TripService {
         log.info("deleteById");
         tripRepository.deleteById(id);
         log.info("deleteByTripId");
-        scheduleRepository.deleteByTripId(tripId);
+        scheduleMapper.deleteByTripId(tripId);
     }
 
 }
